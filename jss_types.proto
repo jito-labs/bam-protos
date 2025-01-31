@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package jss_types;
+
+import "google/protobuf/timestamp.proto";
+
+message Socket {
+  string ip = 1;
+  int64 port = 2;
+}
+
+message Packet {
+  bytes data = 1;
+  Meta meta = 2;
+}
+
+message Meta {
+  uint64 size = 1;
+  string addr = 2;
+  uint32 port = 3;
+  PacketFlags flags = 4;
+  uint64 sender_stake = 5;
+}
+
+message PacketFlags {
+  bool discard = 1;
+  bool forwarded = 2;
+  bool repair = 3;
+  bool simple_vote_tx = 4;
+  bool tracer_packet = 5;
+}
+
+message MicroBlock {
+  repeated Bundle bundles = 1;
+}
+
+message Bundle {
+  repeated Packet packets = 1;
+}
+
+message AccountComputeUnitBudget {
+  bytes pubkey = 1;
+  uint64 available_cus = 2;
+}
+
+message LeaderState {
+  bytes pubkey = 1;
+  uint64 slot = 2;
+  uint32 tick = 3;
+  uint32 slot_cu_budget = 4;
+  repeated AccountComputeUnitBudget slot_account_cu_budget = 5;
+  repeated bytes recently_executed_txn_signatures = 6;
+}
+
+message HeartBeat {}

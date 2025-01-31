@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package jss_api;
+
+import "jss_types.proto";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+
+/// Top-level API request/response types live here; other types are in types.proto
+
+message GetTpuConfigRequest {}
+message TpuConfigResp {
+  jss_types.Socket tpu_sock = 1;
+  jss_types.Socket tpu_fwd_sock = 2;
+}
+
+message StartSchedulerMessage {
+  oneof msg {
+    jss_types.HeartBeat heart_beat = 1;
+    jss_types.LeaderState leader_state = 2;
+  }
+}
+
+message StartSchedulerResponse {
+  oneof resp {
+    jss_types.HeartBeat heart_beat = 1;
+    jss_types.MicroBlock micro_block = 2;
+  }
+}
+
+service JssNodeApi {
+  rpc GetTpuConfig(GetTpuConfigRequest) returns (TpuConfigResp) {}
+  rpc StartSchedulerStream(stream StartSchedulerMessage) returns (stream StartSchedulerResponse) {}
+}
