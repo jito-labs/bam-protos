@@ -35,7 +35,8 @@ message MicroBlock {
 }
 
 message Bundle {
-  repeated Packet packets = 1;
+  bool revert_on_error = 1;
+  repeated Packet packets = 2;
 }
 
 message AccountComputeUnitBudget {
@@ -52,4 +53,6 @@ message LeaderState {
   repeated bytes recently_executed_txn_signatures = 6;
 }
 
-message HeartBeat {}
+message HeartBeat {
+  string pubkey = 1;
+}
