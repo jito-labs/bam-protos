@@ -9,10 +9,12 @@ import "google/protobuf/empty.proto";
 
 /// Top-level API request/response types live here; other types are in types.proto
 
-message GetTpuConfigRequest {}
-message TpuConfigResp {
-  jss_types.Socket tpu_sock = 1;
-  jss_types.Socket tpu_fwd_sock = 2;
+message GetBuilderConfigRequest {}
+message BuilderConfigResp {
+  string builder_pubkey = 1;
+  uint64 builder_commission = 2;
+  jss_types.Socket tpu_sock = 3;
+  jss_types.Socket tpu_fwd_sock = 4;
 }
 
 message StartSchedulerMessage {
@@ -30,6 +32,6 @@ message StartSchedulerResponse {
 }
 
 service JssNodeApi {
-  rpc GetTpuConfig(GetTpuConfigRequest) returns (TpuConfigResp) {}
+  rpc GetBuilderConfig(GetBuilderConfigRequest) returns (BuilderConfigResp) {}
   rpc StartSchedulerStream(stream StartSchedulerMessage) returns (stream StartSchedulerResponse) {}
 }
