@@ -45,14 +45,19 @@ message AccountComputeUnitBudget {
 }
 
 message LeaderState {
-  bytes pubkey = 1;
-  uint64 slot = 2;
-  uint32 tick = 3;
-  uint32 slot_cu_budget = 4;
-  repeated AccountComputeUnitBudget slot_account_cu_budget = 5;
-  repeated bytes recently_executed_txn_signatures = 6;
+  uint64 slot = 1;
+  uint32 tick = 2;
+  uint32 slot_cu_budget = 3;
+  repeated AccountComputeUnitBudget slot_account_cu_budget = 4;
+  repeated bytes recently_executed_txn_signatures = 5;
 }
 
-message HeartBeat {
+message BuilderHeartBeat {
   string pubkey = 1;
+}
+
+message ValidatorHeartBeat {
+  string pubkey = 1;
+  uint64 slot = 2;
+  string slot_signature = 3;
 }
