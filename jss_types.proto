@@ -49,7 +49,6 @@ message LeaderState {
   uint32 tick = 2;
   uint32 slot_cu_budget = 3;
   repeated AccountComputeUnitBudget slot_account_cu_budget = 4;
-  repeated bytes recently_executed_txn_signatures = 5;
 }
 
 message BuilderHeartBeat {
