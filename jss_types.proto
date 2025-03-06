@@ -49,6 +49,7 @@ message LeaderState {
   uint32 tick = 2;
   uint32 slot_cu_budget = 3;
   repeated AccountComputeUnitBudget slot_account_cu_budget = 4;
+  repeated bytes retryable_bundle_ids = 5;
 }
 
 message BuilderHeartBeat {
