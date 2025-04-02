@@ -27,7 +27,7 @@ message StartSchedulerMessage {
 message StartSchedulerResponse {
   oneof resp {
     jss_types.BuilderHeartBeat heart_beat = 1;
-    jss_types.MicroBlock micro_block = 2;
+    jss_types.Bundle bundle = 2;
   }
 }
 

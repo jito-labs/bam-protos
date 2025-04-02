@@ -30,10 +30,6 @@ message PacketFlags {
   bool tracer_packet = 5;
 }
 
-message MicroBlock {
-  repeated Bundle bundles = 1;
-}
-
 message Bundle {
   bool revert_on_error = 1;
   repeated Packet packets = 2;
