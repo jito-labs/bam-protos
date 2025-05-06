@@ -28,10 +28,11 @@ message PacketFlags {
   bool repair = 3;
   bool simple_vote_tx = 4;
   bool tracer_packet = 5;
+  bool revertable = 6;
 }
 
 message Bundle {
-  bool revert_on_error = 1;
+  uint32 seq_id = 1;
   repeated Packet packets = 2;
 }
 
