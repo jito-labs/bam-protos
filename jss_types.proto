@@ -49,7 +49,7 @@ message LeaderState {
 
 message Retryable {}
 message Processed {
-  uint32 cus_consumed = 1;
+  repeated uint32 cus_consumed = 1;
 }
 message Invalid {}
 
