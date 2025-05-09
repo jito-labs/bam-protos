@@ -49,9 +49,14 @@ message LeaderState {
 
 message Retryable {}
 message Processed {
-  repeated uint32 cus_consumed = 1;
+  repeated TransactionProcessedResult transaction_results = 1;
 }
 message Invalid {}
+
+message TransactionProcessedResult {
+  uint32 cus_consumed = 1;
+  uint32 feepayer_balance_after_lamports = 2;
+}
 
 message BundleResult {
   uint32 seq_id = 1;
