@@ -21,6 +21,7 @@ message StartSchedulerMessage {
   oneof msg {
     jss_types.ValidatorHeartBeat heart_beat = 1;
     jss_types.LeaderState leader_state = 2;
+    jss_types.BundleResult bundle_result = 3;
   }
 }
 
