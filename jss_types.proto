@@ -33,9 +33,8 @@ message Bundle {
 message BundleResult {
   uint32 seq_id = 1; // unique for a single leader rotation (response to above Bundle message)
   oneof result {
-    Retryable retryable = 2;
-    Processed processed = 3;
-    Invalid invalid = 4;
+    Committed committed = 2;
+    NotCommitted not_committed = 3;
   }
 }
 
@@ -61,13 +60,14 @@ message PacketFlags {
   bool revert_on_error = 6;
 }
 
-message Retryable {}
-message Processed {
-  repeated TransactionProcessedResult transaction_results = 1;
+message Committed {
+  repeated TransactionCommittedResult transaction_results = 1;
 }
-message Invalid {}
+message NotCommitted {
+  string reason = 1; // TODO: enum
+}
 
-message TransactionProcessedResult {
+message TransactionCommittedResult {
   uint32 cus_consumed = 1;
   uint64 feepayer_balance_lamports = 2;
 }
