@@ -64,7 +64,12 @@ message Committed {
   repeated TransactionCommittedResult transaction_results = 1;
 }
 message NotCommitted {
-  string reason = 1; // TODO: enum
+  NotCommittedReason reason = 1;
+}
+
+enum NotCommittedReason {
+  Invalid = 0;
+  Retryable = 1;
 }
 
 message TransactionCommittedResult {
