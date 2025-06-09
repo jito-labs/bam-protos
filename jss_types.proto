@@ -79,7 +79,7 @@ message DeserializationError {
 
 enum DeserializationErrorReason {
   EMPTY = 0;
-  INCONSISTENT_ERROR_CONFIG = 1;
+  INCONSISTENT_BUNDLE = 1;
   BINCODE_ERROR = 2;
   SIGNATURE_OVERFLOWED = 3;
   SANITIZE_ERROR = 4;
