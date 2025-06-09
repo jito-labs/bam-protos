@@ -68,7 +68,24 @@ message NotCommitted {
     TransactionError transaction_error = 1;
     PohTimeout poh_timeout = 2;
     GenericInvalid generic_invalid = 3;
+    DeserializationError deserialization_error = 4;
   }
+}
+
+message DeserializationError {
+  uint32 index = 1; // index of the packet in the bundle
+  DeserializationErrorReason reason = 2; // reason for the error
+}
+
+enum DeserializationErrorReason {
+  EMPTY = 0;
+  INCONSISTENT_ERROR_CONFIG = 1;
+  BINCODE_ERROR = 2;
+  SIGNATURE_OVERFLOWED = 3;
+  SANITIZE_ERROR = 4;
+  PRIORITIZATION_FAILURE = 5;
+  VOTE_TRANSACTION_FAILURE = 6;
+  FILTER_FAILURE = 7;
 }
 
 message GenericInvalid {}
