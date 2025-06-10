@@ -66,7 +66,7 @@ message Committed {
 message NotCommitted {
   oneof reason {
     TransactionError transaction_error = 1;
-    PohTimeout poh_timeout = 2;
+    SchedulingError scheduling_error = 2;
     GenericInvalid generic_invalid = 3;
     DeserializationError deserialization_error = 4;
   }
@@ -90,6 +90,12 @@ enum DeserializationErrorReason {
 
 message GenericInvalid {}
 
+enum SchedulingError {
+  POH_TIMEOUT = 0;
+  OUTSIDE_LEADER_SLOT = 1;
+  CONTAINER_FULL = 2;
+}
+
 message PohTimeout {}
 
 message TransactionError {
@@ -97,6 +103,8 @@ message TransactionError {
   TransactionErrorReason reason = 2; // reason for the error
 }
 
+
+// Source: 
 enum TransactionErrorReason {
   ACCOUNT_IN_USE = 0;
   ACCOUNT_LOADED_TWICE = 1;
@@ -142,4 +150,5 @@ enum TransactionErrorReason {
 message TransactionCommittedResult {
   uint32 cus_consumed = 1;
   uint64 feepayer_balance_lamports = 2;
+  uint32 loaded_accounts_data_size = 3;
 }
