@@ -27,7 +27,8 @@ message LeaderState {
 
 message Bundle {
   uint32 seq_id = 1; // unique for a single leader rotation
-  repeated Packet packets = 2;
+  uint64 slot = 2; // slot for which this bundle is valid for execution
+  repeated Packet packets = 3;
 }
 
 message BundleResult {
