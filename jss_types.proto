@@ -161,5 +161,6 @@ message FeeCollectionRequest {
 }
 
 message FeeCollectionResponse {
-  Packet packet = 1;
+  uint64 slot = 1;
+  Packet packet = 2;
 }
