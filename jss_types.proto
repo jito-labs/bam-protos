@@ -27,15 +27,15 @@ message LeaderState {
 
 message Bundle {
   uint32 seq_id = 1; // unique for a single leader rotation
-  repeated Packet packets = 2;
+  uint64 max_schedule_slot = 2; // slot for which this bundle is valid for execution
+  repeated Packet packets = 3;
 }
 
 message BundleResult {
   uint32 seq_id = 1; // unique for a single leader rotation (response to above Bundle message)
   oneof result {
-    Retryable retryable = 2;
-    Processed processed = 3;
-    Invalid invalid = 4;
+    Committed committed = 2;
+    NotCommitted not_committed = 3;
   }
 }
 
@@ -61,13 +61,95 @@ message PacketFlags {
   bool revert_on_error = 6;
 }
 
-message Retryable {}
-message Processed {
-  repeated TransactionProcessedResult transaction_results = 1;
+message Committed {
+  repeated TransactionCommittedResult transaction_results = 1;
 }
-message Invalid {}
+message NotCommitted {
+  oneof reason {
+    TransactionError transaction_error = 1;
+    SchedulingError scheduling_error = 2;
+    GenericInvalid generic_invalid = 3;
+    DeserializationError deserialization_error = 4;
+  }
+}
 
-message TransactionProcessedResult {
+message DeserializationError {
+  uint32 index = 1; // index of the packet in the bundle
+  DeserializationErrorReason reason = 2; // reason for the error
+}
+
+enum DeserializationErrorReason {
+  EMPTY = 0;
+  INCONSISTENT_BUNDLE = 1;
+  BINCODE_ERROR = 2;
+  SIGNATURE_OVERFLOWED = 3;
+  SANITIZE_ERROR = 4;
+  PRIORITIZATION_FAILURE = 5;
+  VOTE_TRANSACTION_FAILURE = 6;
+  FILTER_FAILURE = 7;
+}
+
+message GenericInvalid {}
+
+enum SchedulingError {
+  POH_TIMEOUT = 0;
+  OUTSIDE_LEADER_SLOT = 1;
+  CONTAINER_FULL = 2;
+}
+
+message PohTimeout {}
+
+message TransactionError {
+  uint32 index = 1; // index of the transaction in the bundle
+  TransactionErrorReason reason = 2; // reason for the error
+}
+
+
+// Source: 
+enum TransactionErrorReason {
+  ACCOUNT_IN_USE = 0;
+  ACCOUNT_LOADED_TWICE = 1;
+  ACCOUNT_NOT_FOUND = 2;
+  PROGRAM_ACCOUNT_NOT_FOUND = 3;
+  INSUFFICIENT_FUNDS_FOR_FEE = 4;
+  INVALID_ACCOUNT_FOR_FEE = 5;
+  ALREADY_PROCESSED = 6;
+  BLOCKHASH_NOT_FOUND = 7;
+  INSTRUCTION_ERROR = 8;
+  CALL_CHAIN_TOO_DEEP = 9;
+  MISSING_SIGNATURE_FOR_FEE = 10;
+  INVALID_ACCOUNT_INDEX = 11;
+  SIGNATURE_FAILURE = 12;
+  INVALID_PROGRAM_FOR_EXECUTION = 13;
+  SANITIZE_FAILURE = 14;
+  CLUSTER_MAINTENANCE = 15;
+  ACCOUNT_BORROW_OUTSTANDING = 16;
+  WOULD_EXCEED_MAX_BLOCK_COST_LIMIT = 17;
+  UNSUPPORTED_VERSION = 18;
+  INVALID_WRITABLE_ACCOUNT = 19;
+  WOULD_EXCEED_MAX_ACCOUNT_COST_LIMIT = 20;
+  WOULD_EXCEED_ACCOUNT_DATA_BLOCK_LIMIT = 21;
+  TOO_MANY_ACCOUNT_LOCKS = 22;
+  ADDRESS_LOOKUP_TABLE_NOT_FOUND = 23;
+  INVALID_ADDRESS_LOOKUP_TABLE_OWNER = 24;
+  INVALID_ADDRESS_LOOKUP_TABLE_DATA = 25;
+  INVALID_ADDRESS_LOOKUP_TABLE_INDEX = 26;
+  INVALID_RENT_PAYING_ACCOUNT = 27;
+  WOULD_EXCEED_MAX_VOTE_COST_LIMIT = 28;
+  WOULD_EXCEED_ACCOUNT_DATA_TOTAL_LIMIT = 29;
+  DUPLICATE_INSTRUCTION = 30;
+  INSUFFICIENT_FUNDS_FOR_RENT = 31;
+  MAX_LOADED_ACCOUNTS_DATA_SIZE_EXCEEDED = 32;
+  INVALID_LOADED_ACCOUNTS_DATA_SIZE_LIMIT = 33;
+  RESANITIZATION_NEEDED = 34;
+  PROGRAM_EXECUTION_TEMPORARILY_RESTRICTED = 35;
+  UNBALANCED_TRANSACTION = 36;
+  PROGRAM_CACHE_HIT_MAX_LIMIT = 37;
+  COMMIT_CANCELLED = 38;
+}
+
+message TransactionCommittedResult {
   uint32 cus_consumed = 1;
   uint64 feepayer_balance_lamports = 2;
+  uint32 loaded_accounts_data_size = 3;
 }
