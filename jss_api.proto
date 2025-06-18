@@ -22,6 +22,7 @@ message StartSchedulerMessage {
     jss_types.ValidatorHeartBeat heart_beat = 1;
     jss_types.LeaderState leader_state = 2;
     jss_types.BundleResult bundle_result = 3;
+    jss_types.FeeCollectionResponse fee_collection_response = 4;
   }
 }
 
@@ -29,6 +30,7 @@ message StartSchedulerResponse {
   oneof resp {
     jss_types.BuilderHeartBeat heart_beat = 1;
     jss_types.Bundle bundle = 2;
+    jss_types.FeeCollectionRequest fee_collection_request = 3;
   }
 }
 

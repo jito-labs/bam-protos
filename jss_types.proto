@@ -153,3 +153,13 @@ message TransactionCommittedResult {
   uint64 feepayer_balance_lamports = 2;
   uint32 loaded_accounts_data_size = 3;
 }
+
+message FeeCollectionRequest {
+  uint64 slot = 1;
+  uint64 lamports = 2;
+  bytes destination_pubkey = 3;
+}
+
+message FeeCollectionResponse {
+  Packet packet = 1;
+}
