@@ -157,7 +157,7 @@ message TransactionCommittedResult {
 message FeeCollectionRequest {
   uint64 slot = 1;
   uint64 lamports = 2;
-  bytes destination_pubkey = 3;
+  string destination_pubkey = 3;
 }
 
 message FeeCollectionResponse {
