@@ -18,6 +18,12 @@ message BuilderConfigResp {
 }
 
 message StartSchedulerMessage {
+  oneof versioned_msg {
+    StartSchedulerMessageV0 v0 = 1;
+  }
+}
+
+message StartSchedulerMessageV0 {
   oneof msg {
     jss_types.ValidatorHeartBeat heart_beat = 1;
     jss_types.LeaderState leader_state = 2;
@@ -26,6 +32,12 @@ message StartSchedulerMessage {
 }
 
 message StartSchedulerResponse {
+  oneof versioned_msg {
+    StartSchedulerResponseV0 v0 = 1;
+  }
+}
+
+message StartSchedulerResponseV0 {
   oneof resp {
     jss_types.BuilderHeartBeat heart_beat = 1;
     jss_types.Bundle bundle = 2;
