@@ -27,7 +27,7 @@ message StartSchedulerMessageV0 {
   oneof msg {
     bam_types.ValidatorHeartBeat heart_beat = 1;
     bam_types.LeaderState leader_state = 2;
-    bam_types.BundleResult bundle_result = 3;
+    bam_types.AtomicTxnBatchResult atomic_txn_batch_result = 3;
   }
 }
 
@@ -40,7 +40,7 @@ message StartSchedulerResponse {
 message StartSchedulerResponseV0 {
   oneof resp {
     bam_types.BuilderHeartBeat heart_beat = 1;
-    bam_types.Bundle bundle = 2;
+    bam_types.AtomicTxnBatch atomic_txn_batch = 2;
   }
 }
 

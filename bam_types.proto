@@ -25,13 +25,13 @@ message LeaderState {
   uint32 slot_cu_budget = 3;
 }
 
-message Bundle {
+message AtomicTxnBatch {
   uint32 seq_id = 1; // unique for a single leader rotation
   uint64 max_schedule_slot = 2; // slot for which this bundle is valid for execution
   repeated Packet packets = 3;
 }
 
-message BundleResult {
+message AtomicTxnBatchResult {
   uint32 seq_id = 1; // unique for a single leader rotation (response to above Bundle message)
   oneof result {
     Committed committed = 2;
