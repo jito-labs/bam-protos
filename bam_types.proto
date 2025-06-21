@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package jss_types;
+package bam_types;
 
 import "google/protobuf/timestamp.proto";
 

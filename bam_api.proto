@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package jss_api;
+package bam_api;
 
-import "jss_types.proto";
+import "bam_types.proto";
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
@@ -13,8 +13,8 @@ message GetBuilderConfigRequest {}
 message BuilderConfigResp {
   string builder_pubkey = 1;
   uint64 builder_commission = 2;
-  jss_types.Socket tpu_sock = 3;
-  jss_types.Socket tpu_fwd_sock = 4;
+  bam_types.Socket tpu_sock = 3;
+  bam_types.Socket tpu_fwd_sock = 4;
 }
 
 message StartSchedulerMessage {
@@ -25,9 +25,9 @@ message StartSchedulerMessage {
 
 message StartSchedulerMessageV0 {
   oneof msg {
-    jss_types.ValidatorHeartBeat heart_beat = 1;
-    jss_types.LeaderState leader_state = 2;
-    jss_types.BundleResult bundle_result = 3;
+    bam_types.ValidatorHeartBeat heart_beat = 1;
+    bam_types.LeaderState leader_state = 2;
+    bam_types.BundleResult bundle_result = 3;
   }
 }
 
@@ -39,12 +39,12 @@ message StartSchedulerResponse {
 
 message StartSchedulerResponseV0 {
   oneof resp {
-    jss_types.BuilderHeartBeat heart_beat = 1;
-    jss_types.Bundle bundle = 2;
+    bam_types.BuilderHeartBeat heart_beat = 1;
+    bam_types.Bundle bundle = 2;
   }
 }
 
-service JssNodeApi {
+service BamNodeApi {
   rpc GetBuilderConfig(GetBuilderConfigRequest) returns (BuilderConfigResp) {}
   rpc StartSchedulerStream(stream StartSchedulerMessage) returns (stream StartSchedulerResponse) {}
 }
