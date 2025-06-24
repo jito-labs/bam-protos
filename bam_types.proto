@@ -8,11 +8,7 @@ message BuilderHeartBeat {
   string pubkey = 1;
 }
 
-message ValidatorHeartBeat {
-  string pubkey = 1;
-  uint64 slot = 2;
-  string slot_signature = 3;
-}
+message ValidatorHeartBeat {}
 
 message Socket {
   string ip = 1;
