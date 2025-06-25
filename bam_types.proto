@@ -157,11 +157,11 @@ message TransactionCommittedResult {
 message BlockEngineBuilderConfig {
   string builder_pubkey = 1;
   uint64 builder_commission = 2;
-  bam_types.Socket tpu_sock = 3;
-  bam_types.Socket tpu_fwd_sock = 4;
 }
 
 message BamConfig {
   string prio_fee_recipient_pubkey = 1;
   uint64 commission_bps = 2;
+  bam_types.Socket tpu_sock = 3;
+  bam_types.Socket tpu_fwd_sock = 4;
 }
