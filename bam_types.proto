@@ -4,15 +4,15 @@ package bam_types;
 
 import "google/protobuf/timestamp.proto";
 
-message BuilderHeartBeat {
-  string pubkey = 1;
+message AuthProof {
+  string challenge_to_sign = 1; // challenge for the validator
+  string validator_pubkey = 2; // public key of the validator
+  string signature = 3; // signature of the challenge
 }
 
-message ValidatorHeartBeat {
-  string pubkey = 1;
-  uint64 slot = 2;
-  string slot_signature = 3;
-}
+message BuilderHeartBeat {}
+
+message ValidatorHeartBeat {}
 
 message Socket {
   string ip = 1;
@@ -152,4 +152,16 @@ message TransactionCommittedResult {
   uint32 cus_consumed = 1;
   uint64 feepayer_balance_lamports = 2;
   uint32 loaded_accounts_data_size = 3;
+}
+
+message BlockEngineBuilderConfig {
+  string builder_pubkey = 1;
+  uint64 builder_commission = 2;
+  bam_types.Socket tpu_sock = 3;
+  bam_types.Socket tpu_fwd_sock = 4;
+}
+
+message BamConfig {
+  string prio_fee_recipient_pubkey = 1;
+  uint64 commission_bps = 2;
 }
