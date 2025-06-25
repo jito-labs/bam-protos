@@ -33,6 +33,7 @@ message StartSchedulerMessageV0 {
     bam_types.ValidatorHeartBeat heart_beat = 1;
     bam_types.LeaderState leader_state = 2;
     bam_types.AtomicTxnBatchResult atomic_txn_batch_result = 3;
+    bam_types.AuthProof auth_proof = 4;
   }
 }
 

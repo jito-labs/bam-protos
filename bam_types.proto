@@ -5,9 +5,9 @@ package bam_types;
 import "google/protobuf/timestamp.proto";
 
 message AuthProof {
-  string challenge_to_sign = 1; // challenge for the validator
-  string validator_pubkey = 2; // public key of the validator
-  string signature = 3; // signature of the challenge
+  string challenge_to_sign = 1; // Valid for 30 seconds
+  string validator_pubkey = 2;
+  string signature = 3;
 }
 
 message BuilderHeartBeat {}
