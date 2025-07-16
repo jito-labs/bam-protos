@@ -48,6 +48,7 @@ message StartSchedulerResponseV0 {
     bam_types.BuilderHeartBeat heart_beat = 1;
     bam_types.AtomicTxnBatch atomic_txn_batch = 2;
   }
+  google.protobuf.Timestamp timestamp = 2;
 }
 
 service BamNodeApi {
