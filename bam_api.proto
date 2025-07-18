@@ -50,8 +50,11 @@ message StartSchedulerResponseV0 {
   }
 }
 
+message Empty {}
+
 service BamNodeApi {
   rpc GetAuthChallenge(AuthChallengeRequest) returns (AuthChallengeResponse) {}
   rpc GetBuilderConfig(ConfigRequest) returns (ConfigResponse) {}
-  rpc StartSchedulerStream(stream StartSchedulerMessage) returns (stream StartSchedulerResponse) {}
+  rpc StartSchedulerMessageStream(stream StartSchedulerMessage) returns (Empty) {}
+  rpc StartSchedulerResponseStream(bam_types.AuthProof) returns (stream StartSchedulerResponse) {}
 }
