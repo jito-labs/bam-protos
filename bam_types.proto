@@ -43,6 +43,9 @@ message AtomicTxnBatchResult {
     NotCommitted not_committed = 3;
   }
 }
+message BatchesResults {
+  repeated AtomicTxnBatchResult results = 1;
+}
 
 message Packet {
   bytes data = 1;
