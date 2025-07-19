@@ -23,6 +23,11 @@ message LeaderState {
   uint64 slot = 1;
   uint32 tick = 2;
   uint32 slot_cu_budget = 3;
+  repeated AtomicTxnBatchResult results = 4;
+}
+
+message MicroBlock {
+  repeated AtomicTxnBatch atomic_txn_batches = 3;
 }
 
 message AtomicTxnBatch {

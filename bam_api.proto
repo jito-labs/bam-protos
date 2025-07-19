@@ -47,6 +47,7 @@ message StartSchedulerResponseV0 {
   oneof resp {
     bam_types.BuilderHeartBeat heart_beat = 1;
     bam_types.AtomicTxnBatch atomic_txn_batch = 2;
+    bam_types.MicroBlock micro_block = 3;
   }
 }
 
