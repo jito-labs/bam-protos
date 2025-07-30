@@ -53,19 +53,12 @@ message Packet {
 
 message Meta {
   uint64 size = 1;
-  string addr = 2;
-  uint32 port = 3;
-  PacketFlags flags = 4;
-  uint64 sender_stake = 5;
+  PacketFlags flags = 2;
 }
 
 message PacketFlags {
-  bool discard = 1;
-  bool forwarded = 2;
-  bool repair = 3;
-  bool simple_vote_tx = 4;
-  bool tracer_packet = 5;
-  bool revert_on_error = 6;
+  bool simple_vote_tx = 1;
+  bool revert_on_error = 2;
 }
 
 message Committed {
