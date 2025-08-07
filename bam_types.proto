@@ -10,9 +10,13 @@ message AuthProof {
   string signature = 3;
 }
 
-message BuilderHeartBeat {}
+message BuilderHeartBeat {
+  uint64 time_sent_microseconds = 1;
+}
 
-message ValidatorHeartBeat {}
+message ValidatorHeartBeat {
+  uint64 time_sent_microseconds = 1;
+}
 
 message Socket {
   string ip = 1;
@@ -23,7 +27,6 @@ message LeaderState {
   uint64 slot = 1;
   uint32 tick = 2;
   uint32 slot_cu_budget = 3;
-  uint64 time_sent_microseconds = 4;
 }
 
 message AtomicTxnBatch {
