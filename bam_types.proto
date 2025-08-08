@@ -10,9 +10,13 @@ message AuthProof {
   string signature = 3;
 }
 
-message BuilderHeartBeat {}
+message BuilderHeartBeat {
+  uint64 time_sent_microseconds = 1;
+}
 
-message ValidatorHeartBeat {}
+message ValidatorHeartBeat {
+  uint64 time_sent_microseconds = 1;
+}
 
 message Socket {
   string ip = 1;
@@ -31,12 +35,19 @@ message AtomicTxnBatch {
   repeated Packet packets = 3;
 }
 
+message MicroBlock {
+  repeated AtomicTxnBatch atomic_txn_batches = 3;
+}
+
 message AtomicTxnBatchResult {
   uint32 seq_id = 1; // unique for a single leader rotation (response to above Bundle message)
   oneof result {
     Committed committed = 2;
     NotCommitted not_committed = 3;
   }
+}
+message BatchesResults {
+  repeated AtomicTxnBatchResult results = 1;
 }
 
 message Packet {
@@ -46,19 +57,12 @@ message Packet {
 
 message Meta {
   uint64 size = 1;
-  string addr = 2;
-  uint32 port = 3;
-  PacketFlags flags = 4;
-  uint64 sender_stake = 5;
+  PacketFlags flags = 2;
 }
 
 message PacketFlags {
-  bool discard = 1;
-  bool forwarded = 2;
-  bool repair = 3;
-  bool simple_vote_tx = 4;
-  bool tracer_packet = 5;
-  bool revert_on_error = 6;
+  bool simple_vote_tx = 1;
+  bool revert_on_error = 2;
 }
 
 message Committed {
