@@ -22,36 +22,36 @@ message ConfigResponse {
   bam_types.BamConfig bam_config = 2;
 }
 
-message StartSchedulerMessage {
+message SchedulerMessage {
   oneof versioned_msg {
-    StartSchedulerMessageV0 v0 = 1;
+    SchedulerMessageV0 v0 = 1;
   }
 }
 
-message StartSchedulerMessageV0 {
+message SchedulerMessageV0 {
   oneof msg {
     bam_types.ValidatorHeartBeat heart_beat = 1;
     bam_types.LeaderState leader_state = 2;
-    bam_types.AtomicTxnBatchResult atomic_txn_batch_result = 3;
+    bam_types.BatchesResults atomic_txn_batches_results = 3;
     bam_types.AuthProof auth_proof = 4;
   }
 }
 
-message StartSchedulerResponse {
+message SchedulerResponse {
   oneof versioned_msg {
-    StartSchedulerResponseV0 v0 = 1;
+    SchedulerResponseV0 v0 = 1;
   }
 }
 
-message StartSchedulerResponseV0 {
+message SchedulerResponseV0 {
   oneof resp {
     bam_types.BuilderHeartBeat heart_beat = 1;
-    bam_types.AtomicTxnBatch atomic_txn_batch = 2;
+    bam_types.MicroBlock micro_block = 3;
   }
 }
 
 service BamNodeApi {
   rpc GetAuthChallenge(AuthChallengeRequest) returns (AuthChallengeResponse) {}
   rpc GetBuilderConfig(ConfigRequest) returns (ConfigResponse) {}
-  rpc StartSchedulerStream(stream StartSchedulerMessage) returns (stream StartSchedulerResponse) {}
+  rpc InitSchedulerStream(stream SchedulerMessage) returns (stream SchedulerResponse) {}
 }
