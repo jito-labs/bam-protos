@@ -7,7 +7,7 @@ import "google/protobuf/timestamp.proto";
 // The message the Validator sends to the builder to prove its identity
 // based on a challenge sent by the builder
 message AuthProof {
-  string challenge_to_sign = 1; // Valid for 30 seconds
+  string challenge_to_sign = 1;
   string validator_pubkey = 2;
   string signature = 3;
 }
@@ -32,7 +32,7 @@ message Socket {
 message LeaderState {
   uint64 slot = 1;
   uint32 tick = 2;
-  uint32 slot_cu_budget = 3;
+  uint32 slot_cu_budget_remaining = 3;
 }
 
 // An 'atomic transaction batch' is a bundle of transactions that must be processed together
@@ -42,10 +42,10 @@ message AtomicTxnBatch {
   repeated Packet packets = 3;
 }
 
-// A micro block is a collection of disjoint atomic transaction batches;
-// meaning that transactions can batches can be evaluated independently
-message MicroBlock {
-  repeated AtomicTxnBatch atomic_txn_batches = 3;
+// A a collection of disjoint atomic transaction batches;
+// meaning that batches can be evaluated independently from each other
+message MultipleAtomicTxnBatch {
+  repeated AtomicTxnBatch batches = 3;
 }
 
 // The result of processing an atomic transaction batch
@@ -59,8 +59,8 @@ message AtomicTxnBatchResult {
 
 // The result of processing multiple atomic transaction batches
 // Grouping is non-logical and does not imply anything
-// (does not correspond to MicroBlocks, for example)
-message AtomicTxnBatchResults {
+// (does not correspond to AtomicTxnBatchess, for example)
+message MultipleAtomicTxnBatchResult {
   repeated AtomicTxnBatchResult results = 1;
 }
 

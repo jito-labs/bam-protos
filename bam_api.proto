@@ -9,12 +9,15 @@ import "google/protobuf/empty.proto";
 
 /// Top-level API request/response types live here; other types are in types.proto
 
+// Request to get an authentication challenge to sign
 message AuthChallengeRequest {}
 
+// Response containing the challenge to sign
 message AuthChallengeResponse {
   string challenge_to_sign = 1;
 }
 
+// Request to get the block-engine + BAM node configuration
 message ConfigRequest {}
 
 message ConfigResponse {
@@ -22,6 +25,7 @@ message ConfigResponse {
   bam_types.BamConfig bam_config = 2;
 }
 
+// Message sent by the Validator to the Node
 message SchedulerMessage {
   oneof versioned_msg {
     SchedulerMessageV0 v0 = 1;
@@ -32,11 +36,12 @@ message SchedulerMessageV0 {
   oneof msg {
     bam_types.ValidatorHeartBeat heart_beat = 1;
     bam_types.LeaderState leader_state = 2;
-    bam_types.AtomicTxnBatchResults atomic_txn_batches_results = 3;
+    bam_types.MultipleAtomicTxnBatchResult multiple_atomic_txn_batch_result = 3;
     bam_types.AuthProof auth_proof = 4;
   }
 }
 
+// Response sent by the Node to the Validator
 message SchedulerResponse {
   oneof versioned_msg {
     SchedulerResponseV0 v0 = 1;
@@ -46,12 +51,19 @@ message SchedulerResponse {
 message SchedulerResponseV0 {
   oneof resp {
     bam_types.BuilderHeartBeat heart_beat = 1;
-    bam_types.MicroBlock micro_block = 2;
+    bam_types.MultipleAtomicTxnBatch multiple_atomic_txn_batch = 2;
   }
 }
 
 service BamNodeApi {
+  // Get an authentication challenge to sign and send within `stream SchedulerMessage`
+  // in order to authenticate the Validator and start receiving scheduling messages
   rpc GetAuthChallenge(AuthChallengeRequest) returns (AuthChallengeResponse) {}
+
+  // Request the most recent configuration from the BAM node
   rpc GetBuilderConfig(ConfigRequest) returns (ConfigResponse) {}
+
+  // Initialize the scheduler stream; a long-lived stream, bi-directional stream
+  // used for txn scheduling purposes
   rpc InitSchedulerStream(stream SchedulerMessage) returns (stream SchedulerResponse) {}
 }
