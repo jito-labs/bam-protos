@@ -32,7 +32,7 @@ message SchedulerMessageV0 {
   oneof msg {
     bam_types.ValidatorHeartBeat heart_beat = 1;
     bam_types.LeaderState leader_state = 2;
-    bam_types.BatchesResults atomic_txn_batches_results = 3;
+    bam_types.AtomicTxnBatchResults atomic_txn_batches_results = 3;
     bam_types.AuthProof auth_proof = 4;
   }
 }
@@ -46,7 +46,7 @@ message SchedulerResponse {
 message SchedulerResponseV0 {
   oneof resp {
     bam_types.BuilderHeartBeat heart_beat = 1;
-    bam_types.MicroBlock micro_block = 3;
+    bam_types.MicroBlock micro_block = 2;
   }
 }
 

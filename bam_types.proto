@@ -4,18 +4,22 @@ package bam_types;
 
 import "google/protobuf/timestamp.proto";
 
+// The message the Validator sends to the builder to prove its identity
+// based on a challenge sent by the builder
 message AuthProof {
   string challenge_to_sign = 1; // Valid for 30 seconds
   string validator_pubkey = 2;
   string signature = 3;
 }
 
+// A time-stamped heartbeat message sent by the builder to the validator
 message BuilderHeartBeat {
-  uint64 time_sent_microseconds = 1;
+  uint64 time_sent_microseconds = 1; // unix-timestamp
 }
 
+// A time-stamped heartbeat message sent by the validator to the builder
 message ValidatorHeartBeat {
-  uint64 time_sent_microseconds = 1;
+  uint64 time_sent_microseconds = 1; // unix-timestamp
 }
 
 message Socket {
@@ -23,22 +27,28 @@ message Socket {
   int64 port = 2;
 }
 
+// Sent by the validator to the builder when it becomes the leader
+// Used to inform the builder about the current leader state
 message LeaderState {
   uint64 slot = 1;
   uint32 tick = 2;
   uint32 slot_cu_budget = 3;
 }
 
+// An 'atomic transaction batch' is a bundle of transactions that must be processed together
 message AtomicTxnBatch {
   uint32 seq_id = 1; // unique for a single leader rotation
   uint64 max_schedule_slot = 2; // slot for which this bundle is valid for execution
   repeated Packet packets = 3;
 }
 
+// A micro block is a collection of disjoint atomic transaction batches;
+// meaning that transactions can batches can be evaluated independently
 message MicroBlock {
   repeated AtomicTxnBatch atomic_txn_batches = 3;
 }
 
+// The result of processing an atomic transaction batch
 message AtomicTxnBatchResult {
   uint32 seq_id = 1; // unique for a single leader rotation (response to above Bundle message)
   oneof result {
@@ -46,10 +56,15 @@ message AtomicTxnBatchResult {
     NotCommitted not_committed = 3;
   }
 }
-message BatchesResults {
+
+// The result of processing multiple atomic transaction batches
+// Grouping is non-logical and does not imply anything
+// (does not correspond to MicroBlocks, for example)
+message AtomicTxnBatchResults {
   repeated AtomicTxnBatchResult results = 1;
 }
 
+// A Solana network packet
 message Packet {
   bytes data = 1;
   Meta meta = 2;
@@ -93,7 +108,9 @@ enum DeserializationErrorReason {
   FILTER_FAILURE = 7;
 }
 
-message GenericInvalid {}
+message GenericInvalid {
+  string message = 1; // human-readable error message
+}
 
 enum SchedulingError {
   POH_TIMEOUT = 0;
@@ -159,14 +176,16 @@ message TransactionCommittedResult {
   bool execution_success = 4;
 }
 
+// Configuration for the block-engine builder
 message BlockEngineBuilderConfig {
   string builder_pubkey = 1;
   uint64 builder_commission = 2;
 }
 
+// Configuration for the BAM node
 message BamConfig {
-  string prio_fee_recipient_pubkey = 1;
-  uint64 commission_bps = 2;
-  bam_types.Socket tpu_sock = 3;
-  bam_types.Socket tpu_fwd_sock = 4;
+  string prio_fee_recipient_pubkey = 1; // Recipient pubkey of the priority fee commission
+  uint64 commission_bps = 2; // Commission in basis points
+  bam_types.Socket tpu_sock = 3; // Socket for the TPU connection
+  bam_types.Socket tpu_fwd_sock = 4; // Socket for the TPU forward connection
 }
