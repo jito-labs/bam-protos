@@ -156,6 +156,7 @@ message TransactionCommittedResult {
   uint32 cus_consumed = 1;
   uint64 feepayer_balance_lamports = 2;
   uint32 loaded_accounts_data_size = 3;
+  bool execution_success = 4;
 }
 
 message BlockEngineBuilderConfig {
