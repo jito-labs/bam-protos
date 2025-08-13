@@ -59,7 +59,7 @@ message AtomicTxnBatchResult {
 
 // The result of processing multiple atomic transaction batches
 // Grouping is non-logical and does not imply anything
-// (does not correspond to AtomicTxnBatchess, for example)
+// (does not correspond with a distinct MultipleAtomicTxnBatch, for example)
 message MultipleAtomicTxnBatchResult {
   repeated AtomicTxnBatchResult results = 1;
 }
