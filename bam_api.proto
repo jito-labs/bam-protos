@@ -5,7 +5,6 @@ package bam_api;
 import "bam_types.proto";
 
 import "google/protobuf/timestamp.proto";
-import "google/protobuf/empty.proto";
 
 /// Top-level API request/response types live here; other types are in types.proto
 
