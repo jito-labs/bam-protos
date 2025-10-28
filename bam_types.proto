@@ -22,6 +22,21 @@ message ValidatorHeartBeat {
   uint64 time_sent_microseconds = 1; // unix-timestamp
 }
 
+// A ping message sent from BAM to the validator.
+// Some validators have disabled ping on their boxes, which makes it difficult to find how far 
+// away they are from BAM.
+// BAM shall use a randommly generated number to mitigate frontrunning Pong with determinstic id
+// to make latency appear smaller than it is.
+message Ping {
+  uint32 id = 1;
+}
+
+// A pong message sent from the validator to BAM with the same ID it received originally.
+// See Ping message above for more context.
+message Pong {
+  uint32 id = 1;
+}
+
 message Socket {
   string ip = 1;
   uint32 port = 2;
