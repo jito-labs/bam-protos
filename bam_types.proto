@@ -189,4 +189,5 @@ message BamConfig {
   uint32 commission_bps = 2; // Commission in basis points
   bam_types.Socket tpu_sock = 3; // Socket for the TPU connection
   bam_types.Socket tpu_fwd_sock = 4; // Socket for the TPU forward connection
+  bam_types.Socket shred_receiver_sock = 5; // Socket for the shred receiver connection
 }
