@@ -53,6 +53,7 @@ message SchedulerResponseV0 {
     bam_types.BuilderHeartBeat heart_beat = 1;
     bam_types.MultipleAtomicTxnBatch multiple_atomic_txn_batch = 2;
     bam_types.Ping ping = 3;
+    bam_types.BuilderMessage builder_message = 4;
   }
 }
 
