@@ -41,13 +41,13 @@ enum BuilderMessageCode {
   SHUTDOWN = 0;
   NOT_READY = 1;
   DISCONNECT = 2;
-  VIOLATIONS_NOTICED = 3;
+  VIOLATIONS_FOUND = 3;
 }
 
 // A server-to-validator notice sent over the scheduler stream.
 // Intended for server side messages to communicate with the validators.
 message BuilderMessage {
-  enum Severity { INFO = 0; WARN = 1; ERROR = 2; }
+  enum Severity { DEBUG = 0; INFO = 1; WARN = 2; ERROR = 3; }
   Severity severity = 1; // message severity level
   string message = 2; // short human-readable summary
   BuilderMessageCode code = 3; // code to pass along denoting different message types
