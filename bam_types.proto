@@ -51,7 +51,7 @@ message BuilderMessage {
   Severity severity = 1; // message severity level
   string message = 2; // short human-readable summary
   BuilderMessageCode code = 3; // code to pass along denoting different message types
-  google.protobuf.Timestamp time = 4; // time when the notice was created
+  u64 time = 4; // time when the notice was created
 }
 
 message Socket {
