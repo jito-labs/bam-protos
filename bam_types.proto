@@ -29,12 +29,14 @@ message ValidatorHeartBeat {
 // to make latency appear smaller than it is.
 message Ping {
   uint32 id = 1;
+  uint64 time_sent_microseconds = 2; // unix-timestamp of when BAM emitted the ping
 }
 
 // A pong message sent from the validator to BAM with the same ID it received originally.
 // See Ping message above for more context.
 message Pong {
   uint32 id = 1;
+  uint64 time_sent_microseconds = 2; // unix-timestamp of when the validator emitted the pong
 }
 
 message Socket {
