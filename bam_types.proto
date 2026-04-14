@@ -204,5 +204,5 @@ message BamConfig {
   uint32 commission_bps = 2; // Commission in basis points
   bam_types.Socket tpu_sock = 3; // Socket for the TPU connection
   bam_types.Socket tpu_fwd_sock = 4; // Socket for the TPU forward connection
-  repeated bam_types.Socket shred_sock = 5; // Socket(s) for forwarding leader and near-leader shreds
+  repeated bam_types.Socket shred_socks = 5; // Socket(s) for forwarding leader and near-leader shreds
 }
