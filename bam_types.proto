@@ -52,7 +52,9 @@ message LeaderState {
 
 // Sent by the validator when its leader bank is ready for the scheduler stream.
 message LeaderBankReady {
+  // The slot for the leader bank currently being created.
   uint64 slot = 1;
+  // The parent slot of the leader bank currently being created.
   uint64 parent_slot = 2;
 }
 
