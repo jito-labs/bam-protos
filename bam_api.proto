@@ -38,6 +38,7 @@ message SchedulerMessageV0 {
     bam_types.MultipleAtomicTxnBatchResult multiple_atomic_txn_batch_result = 3;
     bam_types.AuthProof auth_proof = 4;
     bam_types.Pong pong = 5;
+    bam_types.LeaderBankReady leader_bank_ready = 6;
   }
 }
 
