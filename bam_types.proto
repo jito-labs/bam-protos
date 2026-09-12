@@ -48,6 +48,11 @@ message LeaderState {
   uint64 slot = 1;
   uint32 tick = 2;
   uint32 slot_cu_budget_remaining = 3;
+  // Leader bank identity, so the builder can create bank `slot` before any shred arrives.
+  // Absent on older validators: the builder must fall back to shred-driven bank creation.
+  optional uint64 parent_slot = 4;
+  optional bytes parent_block_id = 5; // 32 bytes; changes if the bank is replaced within `slot`
+  optional bool atomic_batches_enabled = 6; // validator will execute builder batches on this bank
 }
 
 // An 'atomic transaction batch' is a bundle of transactions that must be processed together
