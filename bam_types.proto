@@ -61,6 +61,7 @@ message AtomicTxnBatch {
 // meaning that batches can be evaluated independently from each other
 message MultipleAtomicTxnBatch {
   repeated AtomicTxnBatch batches = 3;
+  bytes mss_padding = 15; // Ignored by receivers; pads the first message of a leader window to >= 2 MSS.
 }
 
 // The result of processing an atomic transaction batch
