@@ -48,6 +48,11 @@ message LeaderState {
   uint64 slot = 1;
   uint32 tick = 2;
   uint32 slot_cu_budget_remaining = 3;
+  // Missing fields require shred-driven bank creation.
+  optional uint64 parent_slot = 4;
+  optional bytes parent_block_id = 5; // 32 bytes; may change within a slot
+  // True before fast handover activation; false while an optimistic parent is unresolved.
+  optional bool atomic_batches_enabled = 6;
 }
 
 // An 'atomic transaction batch' is a bundle of transactions that must be processed together
