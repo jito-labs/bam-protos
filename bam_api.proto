@@ -22,12 +22,14 @@ message ConfigRequest {}
 message ConfigResponse {
   bam_types.BlockEngineBuilderConfig block_engine_config = 1;
   bam_types.BamConfig bam_config = 2;
+  uint32 feedback_version = 3; //0 legacy;1 coordinated receipts/credits
 }
 
 // Message sent by the Validator to the Node
 message SchedulerMessage {
   oneof versioned_msg {
     SchedulerMessageV0 v0 = 1;
+    SchedulerMessageV1 v1 = 2;
   }
 }
 
@@ -45,6 +47,7 @@ message SchedulerMessageV0 {
 message SchedulerResponse {
   oneof versioned_msg {
     SchedulerResponseV0 v0 = 1;
+    SchedulerResponseV1 v1 = 2;
   }
 }
 
@@ -67,4 +70,28 @@ service BamNodeApi {
   // Initialize the scheduler stream; a long-lived stream, bi-directional stream
   // used for txn scheduling purposes
   rpc InitSchedulerStream(stream SchedulerMessage) returns (stream SchedulerResponse) {}
+}
+
+// Coordinated receipt/credit protocol. Authenticate only after ConfigResponse
+// advertises feedback_version>=1; v0 peers keep the unchanged v0 contract.
+message SchedulerMessageV1 {
+  oneof msg {
+    bam_types.ValidatorHeartBeat heart_beat = 1;
+    bam_types.LeaderState leader_state = 2;
+    bam_types.MultipleKeyedResults keyed_results = 3;
+    bam_types.AuthProof auth_proof = 4;
+    bam_types.Pong pong = 5;
+    bam_types.StreamOpen stream_open = 6;
+    bam_types.CreditReturn credit_return = 7;
+    bam_types.Resume resume = 8;
+  }
+}
+message SchedulerResponseV1 {
+  oneof resp {
+    bam_types.BuilderHeartBeat heart_beat = 1;
+    bam_types.MultipleKeyedBatches keyed_batches = 2;
+    bam_types.Ping ping = 3;
+    bam_types.StreamReady stream_ready = 4;
+    bam_types.Dispositions dispositions = 5;
+  }
 }

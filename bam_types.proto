@@ -132,6 +132,7 @@ enum SchedulingError {
   POH_TIMEOUT = 0;
   OUTSIDE_LEADER_SLOT = 1;
   CONTAINER_FULL = 2;
+  OWNERSHIP_RETIRED = 3; // selectedv1 only
 }
 
 message PohTimeout {}
@@ -206,4 +207,85 @@ message BamConfig {
   bam_types.Socket tpu_sock = 3; // Socket for the TPU connection
   bam_types.Socket tpu_fwd_sock = 4; // Socket for the TPU forward connection
   repeated bam_types.Socket shred_socks = 5; // Socket(s) for forwarding leader and near-leader shreds
+}
+
+
+// Epoch changes on lost node process state. Lease tokens are unique within the
+// authenticated validator/epoch, survive reconnect, and never wrap/reuse.
+message FeedbackLease {
+  fixed64 node_epoch_hi = 1;
+  fixed64 node_epoch_lo = 2;
+  uint64 lease_id = 3;
+}
+message WorkKey {
+  fixed64 node_epoch_hi = 1;
+  fixed64 node_epoch_lo = 2;
+  uint64 batch_id = 3;
+}
+message KeyedBatch {
+  WorkKey key = 1;
+  AtomicTxnBatch batch = 2;
+}
+message MultipleKeyedBatches {
+  FeedbackLease lease = 1;
+  repeated KeyedBatch batches = 2; // at most eight;1..5 packets each
+  bytes mss_padding = 15;
+}
+message KeyedResult {
+  WorkKey key = 1;
+  AtomicTxnBatchResult result = 2;
+}
+message MultipleKeyedResults {
+  FeedbackLease lease = 1;
+  repeated KeyedResult results = 2; // at most24
+}
+message StreamOpen {
+  uint32 capacity = 1;
+  FeedbackLease lease = 2; // absent before first Ready; stable opener permits retry
+  uint64 highwater = 3;
+  uint64 returned_count = 4;
+  uint64 echoed_count = 5;
+  uint64 received_dispatch_count = 6;
+  fixed64 opener_hi = 7; // stable nonzero128 identity before first Ready
+  fixed64 opener_lo = 8; // retained across ordinary reconnects
+}
+message Resume {
+  FeedbackLease lease = 1;
+  uint64 highwater = 2;
+  uint64 returned_count = 3;
+  uint64 echoed_count = 4;
+  uint64 received_dispatch_count = 5;
+}
+message StreamReady {
+  FeedbackLease lease = 1;
+  uint32 capacity = 2;
+  uint64 dispatch_count = 3;
+  uint64 accepted_return_count = 4;
+  uint64 dispatch_base = 5;
+  uint64 highwater = 6;
+  fixed64 opener_hi = 7; // exact echo of lease-opening identity
+  fixed64 opener_lo = 8;
+}
+message CreditReturn {
+  FeedbackLease lease = 1;
+  uint64 first_return_ordinal = 2; // keys counted from1; entire suffix atomic
+  repeated WorkKey keys = 3; //1..24
+}
+enum DispositionStatus {
+  UNKNOWN = 0;
+  APPLIED = 1;
+  SUPERSEDED = 2;
+  CLOSED_UNSEEN = 3;
+  UNAVAILABLE = 4;
+  INVALID = 5;
+  CONFLICT = 6;
+}
+message Disposition {
+  WorkKey key = 1;
+  DispositionStatus status = 2; // only1..3 are refund-eligible
+}
+message Dispositions {
+  FeedbackLease lease = 1;
+  repeated Disposition items = 2; // at most24;0 permits cumulative echo
+  uint64 accepted_return_count = 3;
 }
